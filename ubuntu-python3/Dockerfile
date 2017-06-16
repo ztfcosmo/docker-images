@@ -7,5 +7,5 @@ RUN apt-get update \
   && apt-get install -y python3-astropy ipython3 \
   && cd /usr/local/bin \
   && ln -s /usr/bin/python3 python \
-  && ln -s /usr/bin/ipython3 python \
+  && ln -s /usr/bin/ipython3 ipython \
   && pip3 install --upgrade pip
