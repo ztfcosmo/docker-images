@@ -95,7 +95,7 @@ Now, copy the image (in this example, `sncosmo-2017-06-21-20a50d68c95e.img`) to 
 First, we can run the container directly on the submit node:
 
 ```
-singularity run sncosmo-2017-06-21-20a50d68c95e.img 
+./sncosmo-2017-06-21-20a50d68c95e.img 
 *** I am jvsanten on wgs04.zeuthen.desy.de ***
 chisq: 124.60107115345085
 covariance: [[  2.72494078e-01  -5.20203746e-08   5.68395451e-03   2.51680894e-02]
@@ -118,11 +118,13 @@ success: True
 vparam_names: ['t0', 'x0', 'x1', 'c']
 ```
 
-Note that in contrast to the Docker version above, I am now a normal user
+There are a couple of differences to the Docker version above. First, the image
+itself is executable, which is kind of neat. Also, I am now a normal user
 instead of root. The complete lack of privilege escalation is one of the things
 that seems to make academic computing folk more comfortable with Singularity
 than with Docker. Also, container changes are discarded by default (so `--rm`
-is on by default; pass `--writable` to save changes), and the process in the
+is on by default; use `singularity --writable run
+sncosmo-2017-06-21-20a50d68c95e.img` to save changes), and the process in the
 image is attached to the calling tty by default (so `-it` is on by default).
 
 Running on a single machine where we don't have root is not much of an
@@ -131,7 +133,7 @@ very straightforward to submit a Singularity image as a job to a batch system.
 For example, using UGE we would do:
 
 ```
-qsub -j y -cwd -l h_rt=00:01:00 -b y singularity run sncosmo-2017-06-21-6f6d6f1aab00.img 
+qsub -j y -cwd -l h_rt=00:01:00 -b y sncosmo-2017-06-21-6f6d6f1aab00.img 
 Your job 20536421 ("singularity") has been submitted
 ```
 
