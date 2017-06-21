@@ -16,15 +16,20 @@ single (large) file and be running in minutes.
 
 First, clone this repo to a machine where you have Docker installed (and have admin rights):
 
-```git clone git@github.com:ztfcosmo/docker-images.git && cd docker-images/sncosmo-demo```
+```
+git clone git@github.com:ztfcosmo/docker-images.git && cd docker-images/sncosmo-demo
+```
 
 Then, build the demo image. We'll call it `sncosmo`:
 
-```docker build -t sncosmo .```
+```
+docker build -t sncosmo .
+```
 
 Executing the image will run the default entry point (the demo script shipped in the git repository):
 
-```[jakob@znb34:docker-images/sncosmo-demo]$ docker run --rm sncosmo
+```
+docker run --rm sncosmo
 *** I am root on c069cb651672 ***
 chisq: 124.60107115345085
 covariance: [[  2.72494078e-01  -5.20203746e-08   5.68395451e-03   2.51680894e-02]
@@ -44,7 +49,8 @@ param_names: ['z', 't0', 'x0', 'x1', 'c']
 parameters: [  0.00000000e+00   5.50986757e+04   1.28807239e-06  -8.61532837e-01
    1.93219345e+00]
 success: True
-vparam_names: ['t0', 'x0', 'x1', 'c']```
+vparam_names: ['t0', 'x0', 'x1', 'c']
+```
 
 The `--rm` flag discards changes to the container's filesystem when it exits,
 ensuring repeatability.
@@ -56,7 +62,8 @@ until it is widely deployed you'll have to convert the Docker image to
 Singularity format on your own machine using the handy `docker2singularity`
 utility. The `docker2singularity.sh` wrapper script does this for you:
 
-```./docker2singularity.sh sncosmo
+```
+./docker2singularity.sh sncosmo
 Size: 967 MB for the singularity container
 (1/9) Creating an empty image...
 Creating a sparse image with a maximum size of 967MiB...
@@ -78,7 +85,8 @@ Singularity: sexec (U=0,P=181)> Command=exec, Container=/tmp/sncosmo-2017-06-21-
 20a50d68c95e
 20a50d68c95e
 (9/9) Moving the image to the output folder...
-  1,013,973,024 100%   73.56MB/s    0:00:13 (xfr#1, to-chk=0/1)```
+  1,013,973,024 100%   73.56MB/s    0:00:13 (xfr#1, to-chk=0/1)
+```
 
 Now, copy the image (in this example, `sncosmo-2017-06-21-20a50d68c95e.img`) to the submit node of your favorite shared cluster.
 
@@ -86,7 +94,8 @@ Now, copy the image (in this example, `sncosmo-2017-06-21-20a50d68c95e.img`) to 
 
 First, we can run the container directly on the submit node:
 
-```singularity run sncosmo-2017-06-21-20a50d68c95e.img 
+```
+singularity run sncosmo-2017-06-21-20a50d68c95e.img 
 *** I am jvsanten on wgs04.zeuthen.desy.de ***
 chisq: 124.60107115345085
 covariance: [[  2.72494078e-01  -5.20203746e-08   5.68395451e-03   2.51680894e-02]
@@ -106,7 +115,8 @@ param_names: ['z', 't0', 'x0', 'x1', 'c']
 parameters: [  0.00000000e+00   5.50986757e+04   1.28807239e-06  -8.61532837e-01
    1.93219345e+00]
 success: True
-vparam_names: ['t0', 'x0', 'x1', 'c']```
+vparam_names: ['t0', 'x0', 'x1', 'c']
+```
 
 Note that in contrast to the Docker version above, I am now a normal user
 instead of root. The complete lack of privilege escalation is one of the things
@@ -120,13 +130,16 @@ improvement over running on our laptop. The neat thing, however, is that it's
 very straightforward to submit a Singularity image as a job to a batch system.
 For example, using UGE we would do:
 
-```qsub -j y -cwd -l h_rt=00:01:00 -b y singularity run sncosmo-2017-06-21-6f6d6f1aab00.img 
-Your job 20536421 ("singularity") has been submitted```
+```
+qsub -j y -cwd -l h_rt=00:01:00 -b y singularity run sncosmo-2017-06-21-6f6d6f1aab00.img 
+Your job 20536421 ("singularity") has been submitted
+```
 
 The output in the log file is identical to the version that ran on our laptop
 and on the submit node:
 
-```cat singularity.o20536421 
+```
+cat singularity.o20536421 
 *** I am jvsanten on bladeg1.zeuthen.desy.de ***
 chisq: 124.60107115345085
 covariance: [[  2.72494078e-01  -5.20203746e-08   5.68395451e-03   2.51680894e-02]
@@ -146,7 +159,8 @@ param_names: ['z', 't0', 'x0', 'x1', 'c']
 parameters: [  0.00000000e+00   5.50986757e+04   1.28807239e-06  -8.61532837e-01
    1.93219345e+00]
 success: True
-vparam_names: ['t0', 'x0', 'x1', 'c']```
+vparam_names: ['t0', 'x0', 'x1', 'c']
+```
 
 In this case these 3 machines were all running different operating systems, but
 we could still run exactly the same image.
