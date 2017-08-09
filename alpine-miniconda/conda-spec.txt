@@ -1,9 +1,14 @@
 # core deps
 dask=0.15.1
+drmaa
 
 # numerics
 numpy
 scipy
+
+# useful bits
+notebook
+ipywidgets
 
 # astronomy
 astropy=2.0.1

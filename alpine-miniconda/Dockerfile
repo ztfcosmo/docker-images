@@ -7,4 +7,8 @@ RUN conda config --add channels conda-forge \
   && conda remove --force qt pyqt sip \
   && conda clean --all
 
+RUN apk --update add perl
+
+RUN mkdir /acs /afs /batch /cvmfs /lustre /net /usr/gridengine
+
 ENV LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
